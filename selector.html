@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="Free interactive tool that ranks zero-capital passive income models against your time, skills, audience and goal, with a starter roadmap. Runs entirely in your browser, no signup." />
+<link rel="canonical" href="https://lwhartleigh-gh.github.io/hartleigh-fee-guardrail/selector.html" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Zero-Capital Passive Income Model Selector" />
+<meta property="og:description" content="Answer 4 questions to rank which zero-capital passive income model fits your strengths and goals. 100% free, in-browser." />
+<meta property="og:url" content="https://lwhartleigh-gh.github.io/hartleigh-fee-guardrail/selector.html" />
+<title>Zero-Capital Passive Income Model Selector — Hartleigh Group</title>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background:#fff9fc; color:#0f172a; margin:0; padding:28px; line-height:1.6; }
+  .card { max-width:820px; margin:0 auto; background:#fff; border:1px solid #fbcfe8; border-radius:16px; padding:26px 30px; box-shadow:0 10px 30px rgba(157,23,77,0.08); }
+  h1 { margin:0 0 6px; font-size:22px; color:#9d174d; }
+  .sub { font-size:12.5px; color:#64748b; margin-bottom:6px; }
+  .free-badge { display:inline-block; background:#ecfdf5; color:#047857; font-size:12px; font-weight:700; padding:5px 11px; border-radius:999px; margin-bottom:18px; }
+  .grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:14px 0; }
+  label { display:block; font-size:11.5px; font-weight:700; color:#9d174d; margin-bottom:5px; }
+  select { width:100%; padding:9px 11px; border:1px solid #f3d1e0; border-radius:9px; font-size:13.5px; }
+  .skills { display:flex; flex-wrap:wrap; gap:8px; margin:6px 0 4px; }
+  .skill { border:1px solid #f3d1e0; border-radius:999px; padding:6px 12px; font-size:12px; cursor:pointer; user-select:none; background:#fff; }
+  .skill.on { background:#9d174d; color:#fff; border-color:#9d174d; }
+  button.calc { background:linear-gradient(135deg,#ec4899,#9d174d); color:#fff; border:none; border-radius:10px; padding:11px 18px; font-weight:800; cursor:pointer; width:100%; font-size:13.5px; }
+  .model { border:1px solid #f3d1e0; border-radius:12px; padding:14px 16px; margin:10px 0; }
+  .model .rank { background:#fdf2f8; color:#9d174d; font-weight:800; border-radius:8px; padding:2px 8px; font-size:12px; }
+  .model .name { font-weight:800; font-size:15px; margin:6px 0 3px; color:#0f172a; }
+  .model .meta { font-size:11.5px; color:#64748b; margin-bottom:6px; }
+  .model .why { font-size:12.5px; }
+  .bar { height:6px; background:#f3d1e0; border-radius:999px; margin:8px 0; overflow:hidden; }
+  .bar > i { display:block; height:100%; background:linear-gradient(90deg,#ec4899,#9d174d); }
+  h2 { font-size:15px; color:#9d174d; margin:26px 0 10px; border-top:1px solid #fbcfe8; padding-top:18px; }
+  .tiers { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+  .tier { border:1px solid #f3d1e0; border-radius:12px; padding:14px; text-align:center; }
+  .tier .price { font-size:20px; font-weight:800; color:#9d174d; }
+  .tier .name { font-size:11.5px; font-weight:700; margin:4px 0 8px; color:#334155; }
+  .tier a { display:inline-block; background:#9d174d; color:#fff; text-decoration:none; padding:8px 12px; border-radius:8px; font-size:12px; font-weight:700; }
+  .disc { background:#fff7ed; border:1px solid #fed7aa; border-radius:12px; padding:12px 14px; font-size:11.5px; color:#7c2d12; margin:16px 0 0; }
+  .note { font-size:11px; color:#64748b; margin-top:18px; border-top:1px solid #f3d1e0; padding-top:14px; }
+  a.navlink { color:#9d174d; font-weight:700; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div><a class="navlink" href="./">← Fee &amp; Settlement-Rail Calculator</a></div>
+  <h1>Zero-Capital Passive Income Model Selector</h1>
+  <div class="sub">Answer 4 quick questions → get a ranked fit of zero-capital models with a starter roadmap. Runs in your browser.</div>
+  <div class="free-badge">✅ 100% FREE tool — no account, no tracking</div>
+
+  <div class="grid">
+    <div>
+      <label>Time you can commit (per week)</label>
+      <select id="time">
+        <option value="2">&lt; 5 hrs</option>
+        <option value="6">5–10 hrs</option>
+        <option value="12">10–20 hrs</option>
+        <option value="25">20+ hrs</option>
+      </select>
+    </div>
+    <div>
+      <label>Existing audience / email list</label>
+      <select id="aud">
+        <option value="0">None</option>
+        <option value="1">Small (under 1k)</option>
+        <option value="2">Large (1k+)</option>
+      </select>
+    </div>
+    <div>
+      <label>Primary goal</label>
+      <select id="goal">
+        <option value="fast">First dollars fast</option>
+        <option value="recurring">Recurring income</option>
+        <option value="passive">Long-term passive</option>
+      </select>
+    </div>
+    <div>
+      <label>Starting capital (this tool assumes $0)</label>
+      <select id="cap" disabled>
+        <option value="0">$0 — zero-capital path</option>
+      </select>
+    </div>
+  </div>
+
+  <label>Your skills &amp; strengths (tap to select)</label>
+  <div class="skills" id="skills">
+    <div class="skill" data-s="writing">✍️ Writing</div>
+    <div class="skill" data-s="code">💻 Code / Tech</div>
+    <div class="skill" data-s="design">🎨 Design</div>
+    <div class="skill" data-s="sales">🤝 Sales / Outreach</div>
+    <div class="skill" data-s="research">🔎 Research / Data</div>
+    <div class="skill" data-s="video">🎬 Video / Audio</div>
+  </div>
+
+  <button class="calc" onclick="run()">Rank My Best Models</button>
+  <div id="out" style="margin-top:18px;">
+    <div class="model"><div class="why">Select your strengths and click <strong>Rank My Best Models</strong>.</div></div>
+  </div>
+
+  <h2>Found this useful? You can support it (optional)</h2>
+  <div class="disc">
+    <strong>Before sending anything:</strong> These buttons are <strong>voluntary contributions to keep this tool free</strong>.
+    They do <strong>NOT</strong> purchase any product, service, report, or guarantee — <strong>nothing is owed</strong> and there is nothing to deliver or refund.
+    This is a planning aid, not financial advice, and it makes no income claims.
+  </div>
+  <div class="tiers">
+    <div class="tier"><div class="price">$49</div><div class="name">Support the free tool</div><a href="https://paypal.me/hartleighpaypal/49" target="_blank" rel="noopener">Support via PayPal</a></div>
+    <div class="tier"><div class="price">$190</div><div class="name">Support the free tool</div><a href="https://paypal.me/hartleighpaypal/190" target="_blank" rel="noopener">Support via PayPal</a></div>
+    <div class="tier"><div class="price">$490</div><div class="name">Support the free tool</div><a href="https://paypal.me/hartleighpaypal/490" target="_blank" rel="noopener">Support via PayPal</a></div>
+  </div>
+
+  <div class="note">
+    <strong>Transparency &amp; limits.</strong> Results are general planning guidance generated in your browser from the model you select — not a promise of earnings.
+    No income figure shown is a guarantee. Not investment, legal, or tax advice. Consult a qualified professional.
+    Hartleigh Group acts strictly as a non-custodial research, verification and introducer desk and never holds principal funds.
+    <br><br><em>Identity: Hartleigh Group &lt;lwhartleigh@gmail.com&gt; · Support: paypal.me/hartleighpaypal</em>
+  </div>
+</div>
+
+<script>
+document.querySelectorAll('.skill').forEach(el=>{
+  el.addEventListener('click',()=>el.classList.toggle('on'));
+});
+
+const MODELS = [
+  {id:"PI-01", name:"Evergreen Monographs & Valuation Reports", macro:"Digital IP", speed:"24–72h", tags:["writing","research"], goal:["fast","recurring"], aud:[0,1,2]},
+  {id:"PI-02", name:"Template / NCNDA / SOP Kit Store", macro:"Digital IP", speed:"24–48h", tags:["writing","design"], goal:["fast","recurring"], aud:[0,1]},
+  {id:"PI-03", name:"Self-Published E-books & Archives", macro:"Digital IP", speed:"7–14d", tags:["writing"], goal:["passive"], aud:[0,1,2]},
+  {id:"PI-04", name:"Paid Newsletter & Deal Alerts", macro:"Digital IP", speed:"24–72h", tags:["writing","research"], goal:["recurring"], aud:[1,2]},
+  {id:"PI-05", name:"Async Mini-Courses & Playbooks", macro:"Digital IP", speed:"7–14d", tags:["writing","research"], goal:["passive","recurring"], aud:[1,2]},
+  {id:"PI-06", name:"Valuation Data Feed (DaaS / API)", macro:"SaaS / Data", speed:"24–72h", tags:["code","research"], goal:["recurring","passive"], aud:[0,1,2]},
+  {id:"PI-07", name:"Micro-SaaS Utility (Fee/Calc Tool)", macro:"SaaS / Data", speed:"24h", tags:["code","design"], goal:["fast","recurring"], aud:[0,1,2]},
+  {id:"PI-08", name:"AI Agent Blueprint & Prompt Store", macro:"SaaS / Data", speed:"24–48h", tags:["code","writing"], goal:["fast"], aud:[0,1,2]},
+  {id:"PI-09", name:"Verified Global Dealer Directory", macro:"SaaS / Data", speed:"7–14d", tags:["research","code"], goal:["passive","recurring"], aud:[0,1]},
+  {id:"PI-10", name:"High-Ticket Affiliate Marketing", macro:"Affiliate / Royalty", speed:"24–72h", tags:["sales","research"], goal:["fast"], aud:[0,1,2]},
+  {id:"PI-11", name:"Automated B2B Lead Routing", macro:"Affiliate / Royalty", speed:"24–48h", tags:["sales","research"], goal:["fast","recurring"], aud:[0,1,2]},
+  {id:"PI-12", name:"Monthly Sourcing Retainer", macro:"Affiliate / Royalty", speed:"48–72h", tags:["sales"], goal:["recurring"], aud:[1,2]},
+  {id:"PI-13", name:"White-Label Drop-Servicing", macro:"Affiliate / Royalty", speed:"24–72h", tags:["sales"], goal:["fast"], aud:[0,1,2]},
+  {id:"PI-14", name:"IP Licensing & Royalties", macro:"Affiliate / Royalty", speed:"7–14d", tags:["writing","code"], goal:["passive","recurring"], aud:[0,1,2]},
+  {id:"PI-15", name:"Faceless YouTube / Audio Channel", macro:"Media / POD", speed:"14–30d", tags:["video","writing"], goal:["passive"], aud:[0,1,2]},
+  {id:"PI-16", name:"Pinterest Search Funnel", macro:"Media / POD", speed:"24–72h", tags:["design"], goal:["passive"], aud:[0,1,2]},
+  {id:"PI-17", name:"Public-Domain Art Bundle Store", macro:"Media / POD", speed:"24–72h", tags:["design"], goal:["fast"], aud:[0,1,2]},
+  {id:"PI-18", name:"POD Museum Fine-Art Prints", macro:"Media / POD", speed:"7–14d", tags:["design"], goal:["passive"], aud:[0,1,2]},
+  {id:"PI-19", name:"Collector Bounty / Mandate Board", macro:"Digital RE", speed:"48–72h", tags:["sales","research"], goal:["recurring"], aud:[1,2]},
+  {id:"PI-20", name:"Niche Micro-Site (Traffic / Flipping)", macro:"Digital RE", speed:"14–30d", tags:["code","writing"], goal:["passive"], aud:[0,1,2]}
+];
+
+function run(){
+  const t = +document.getElementById('time').value;
+  const aud = +document.getElementById('aud').value;
+  const goal = document.getElementById('goal').value;
+  const sk = [...document.querySelectorAll('.skill.on')].map(e=>e.dataset.s);
+
+  const scored = MODELS.map(m=>{
+    let s = 0;
+    s += m.tags.filter(tag=>sk.includes(tag)).length * 3;
+    if (m.goal.includes(goal)) s += 4;
+    if (m.aud.includes(aud)) s += 2;
+    if (aud === 0 && m.aud.includes(0)) s += 1;
+    if (t >= 20) s += 1;
+    if (t < 5 && m.speed.includes('24')) s += 2;
+    return {...m, score:s};
+  }).sort((a,b)=>b.score-a.score);
+
+  const max = scored[0].score || 1;
+  const top = scored.slice(0,5);
+  document.getElementById('out').innerHTML = top.map((m,i)=>`
+    <div class="model">
+      <span class="rank">#${i+1}</span>
+      <div class="name">${m.id} — ${m.name}</div>
+      <div class="meta">${m.macro} · First results in ${m.speed}</div>
+      <div class="bar"><i style="width:${Math.round(m.score/max*100)}%"></i></div>
+      <div class="why">Why it fits: matches ${m.tags.filter(x=>sk.includes(x)).length} of your selected strengths, aligns with your “${goal}” goal${aud===0?', and works with no existing audience':''}. Start by producing one small paid asset and publishing it on a zero-fee platform.</div>
+    </div>`).join('');
+}
+</script>
+</body>
+</html>

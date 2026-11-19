@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://lwhartleigh-gh.github.io/hartleigh-fee-guardrail/sitemap.xml

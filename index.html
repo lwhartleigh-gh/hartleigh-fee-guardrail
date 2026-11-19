@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="Free pre-contract fee and settlement-rail calculator for non-custodial cross-border deals. Computes transparent written fee disclosure and PayPal/Escrow routing instantly in your browser. No account, no tracking." />
+<link rel="canonical" href="https://lwhartleigh-gh.github.io/hartleigh-fee-guardrail/" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Free Pre-Contract Fee & Settlement-Rail Calculator" />
+<meta property="og:description" content="Transparent written fee disclosure and PayPal/Escrow settlement routing for non-custodial cross-border deals. 100% free, in-browser." />
+<meta property="og:url" content="https://lwhartleigh-gh.github.io/hartleigh-fee-guardrail/" />
+<title>Hartleigh Group — Free Pre-Contract Fee &amp; Settlement-Rail Calculator</title>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #fff9fc; color: #0f172a; margin: 0; padding: 28px; line-height: 1.6; }
+  .card { max-width: 760px; margin: 0 auto; background: #fff; border: 1px solid #fbcfe8; border-radius: 16px; padding: 26px 30px; box-shadow: 0 10px 30px rgba(157,23,77,0.08); }
+  h1 { margin: 0 0 6px; font-size: 22px; color: #9d174d; }
+  .sub { font-size: 12.5px; color: #64748b; margin-bottom: 6px; }
+  .free-badge { display:inline-block; background:#ecfdf5; color:#047857; font-size:12px; font-weight:700; padding:5px 11px; border-radius:999px; margin-bottom:18px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+  label { display: block; font-size: 11.5px; font-weight: 700; color: #9d174d; margin-bottom: 4px; }
+  input, select { width: 100%; padding: 9px 11px; border: 1px solid #f3d1e0; border-radius: 9px; font-size: 13.5px; box-sizing: border-box; }
+  button.calc { background: linear-gradient(135deg,#ec4899,#9d174d); color:#fff; border:none; border-radius:10px; padding:11px 18px; font-weight:800; cursor:pointer; width:100%; font-size:13.5px; }
+  .out { margin-top: 16px; background: #fdf2f8; border: 1px solid #fbcfe8; border-radius: 12px; padding: 14px 16px; font-size: 13px; white-space: pre-wrap; }
+  h2 { font-size: 15px; color: #9d174d; margin: 26px 0 10px; border-top: 1px solid #fbcfe8; padding-top: 18px; }
+  .tiers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .tier { border: 1px solid #f3d1e0; border-radius: 12px; padding: 14px; text-align: center; background: #fff; }
+  .tier .price { font-size: 20px; font-weight: 800; color: #9d174d; }
+  .tier .name { font-size: 11.5px; font-weight: 700; margin: 4px 0 8px; color: #334155; }
+  .tier a { display: inline-block; background: #9d174d; color: #fff; text-decoration: none; padding: 8px 12px; border-radius: 8px; font-size: 12px; font-weight: 700; }
+  .tier a:hover { background: #ec4899; }
+  .disc { background:#fff7ed; border:1px solid #fed7aa; border-radius:12px; padding:12px 14px; font-size:11.5px; color:#7c2d12; margin:16px 0 0; }
+  .isnot { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:10px; }
+  .isnot div { border:1px solid #f3d1e0; border-radius:12px; padding:12px 14px; font-size:12px; }
+  .isnot .no { background:#fef2f2; border-color:#fecaca; }
+  .isnot .yes { background:#ecfdf5; border-color:#a7f3d0; }
+  .note { font-size: 11px; color: #64748b; margin-top: 18px; border-top: 1px solid #f3d1e0; padding-top: 14px; }
+  a.navlink { color:#9d174d; font-weight:700; }
+  .quicklinks { background:#fdf2f8; border:1px solid #fbcfe8; border-radius:12px; padding:12px 14px; margin:14px 0 0; font-size:12.5px; }
+  .quicklinks a { color:#9d174d; font-weight:700; text-decoration:none; }
+  .quicklinks a:hover { text-decoration:underline; }
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>Hartleigh Group — Pre-Contract Fee &amp; Settlement-Rail Calculator</h1>
+  <div class="sub">Runs entirely in your browser. No account, no tracking, no data collected.</div>
+  <div class="free-badge">✅ 100% FREE tool — use it as much as you like</div>
+
+  <div class="quicklinks">More free tools: <a href="./selector.html">→ Zero-Capital Passive Income Model Selector</a> &nbsp;·&nbsp; <a href="./payout.html">→ Payout Cost Comparator</a></div>
+
+  <div class="grid">
+    <div><label>Estimated Asset / Deal Value (USD)</label><input id="val" type="number" value="64900" /></div>
+    <div><label>Counterparty Country / Region</label>
+      <select id="ctry">
+        <option value="US">United States (Non-KR · PayPal + Escrow)</option>
+        <option value="UK">United Kingdom (Non-KR · PayPal + Escrow)</option>
+        <option value="CH">Switzerland (Non-KR · PayPal + Escrow)</option>
+        <option value="EU">European Union (Non-KR · PayPal + Escrow)</option>
+        <option value="SG">Singapore / UAE (Non-KR · PayPal + Escrow)</option>
+        <option value="JP">Japan (Non-KR · PayPal + Escrow)</option>
+        <option value="KR">South Korea (KR · Domestic PayPal Blocked -&gt; Escrow.com)</option>
+      </select>
+    </div>
+  </div>
+  <button class="calc" onclick="calc()">Calculate Pre-Contract Fee Disclosure &amp; Settlement Rail</button>
+  <div id="out" class="out">Click Calculate to generate a transparent pre-contract written fee disclosure.</div>
+
+  <h2>Found this free tool useful? You can support it (optional)</h2>
+  <div class="disc">
+    <strong>Please read before sending anything:</strong> These buttons are <strong>voluntary contributions to keep this tool free</strong>.
+    They do <strong>NOT</strong> purchase any product, service, report, or guarantee — <strong>nothing is owed to you</strong> and there is nothing to deliver or refund.
+    If you want paid written advisory, email us first and we agree the scope and terms <strong>in writing before any payment</strong>. We never take payment for an undelivered product.
+  </div>
+  <div class="tiers">
+    <div class="tier"><div class="price">$49</div><div class="name">Support the free tool</div><a href="https://paypal.me/hartleighpaypal/49" target="_blank" rel="noopener">Support via PayPal</a></div>
+    <div class="tier"><div class="price">$190</div><div class="name">Support the free tool</div><a href="https://paypal.me/hartleighpaypal/190" target="_blank" rel="noopener">Support via PayPal</a></div>
+    <div class="tier"><div class="price">$490</div><div class="name">Support the free tool</div><a href="https://paypal.me/hartleighpaypal/490" target="_blank" rel="noopener">Support via PayPal</a></div>
+  </div>
+
+  <h2>What this is / What this is NOT</h2>
+  <div class="isnot">
+    <div class="yes">
+      <strong>It IS</strong>
+      <ul>
+        <li>A free, transparent fee &amp; settlement-rail calculator.</li>
+        <li>Built on a 4-Zero non-custodial standard.</li>
+        <li>Honest — no fabricated figures or fake claims.</li>
+      </ul>
+    </div>
+    <div class="no">
+      <strong>It is NOT</strong>
+      <ul>
+        <li>Investment, legal, or tax advice.</li>
+        <li>A guarantee of profit, commission, or return.</li>
+        <li>A solicitation to invest or send principal funds.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="note">
+    <strong>Hartleigh Group — 4-Zero Non-Custodial Standard.</strong>
+    Hartleigh Group acts strictly as an independent non-custodial research, verification and introducer desk.
+    It never purchases, takes title to, stores or ships goods, and never holds principal purchase funds.
+    100% of purchase principal settles directly between Buyer and Seller.
+    Zero Capital · Zero Inventory · Zero Custody · Zero Phone/Visit (100% written closing).
+    <br><br>
+    <strong>Settlement rails (if you ever engage us formally):</strong> Cross-border PayPal (paypal.me/hartleighpaypal) · Escrow.com (lwhartleigh@gmail.com).
+    Korean (KR) counterparties are routed exclusively to Escrow.com; domestic KR PayPal is blocked.
+    <br><br>
+    <strong>Transparency:</strong> This page reports no confirmed receipts and makes no income claims.
+    Voluntary support is non-refundable (nothing is owed), but any concern is answered at lwhartleigh@gmail.com.
+    Not tax or legal advice — consult a qualified professional.
+    <br><br>
+    <em>Identity: Hartleigh Group &lt;lwhartleigh@gmail.com&gt;</em>
+  </div>
+</div>
+<script>
+function calc() {
+  const v = Math.max(0, Number(document.getElementById('val').value || 0));
+  const c = document.getElementById('ctry').value;
+  let ret = 290, rew = 500, pct = 8.0;
+  if (v >= 100000) { ret = 950; rew = 2500; pct = 3.0; }
+  else if (v >= 40000) { ret = 490; rew = 1000; pct = 5.0; }
+  else if (v >= 15000) { ret = 290; rew = 500; pct = 6.0; }
+  const comm = Math.round(v * pct) / 100;
+  const total = ret + rew + comm;
+  const rail = c === 'KR'
+    ? 'DOMESTIC KR PAYPAL BLOCKED -> Route exclusively via Escrow.com (lwhartleigh@gmail.com) or formal written invoice.'
+    : 'Cross-Border PayPal (https://paypal.me/hartleighpaypal) for Retainer/Reward + Escrow.com (lwhartleigh@gmail.com) for high-value closing.';
+  document.getElementById('out').innerText =
+    `[PRE-CONTRACT WRITTEN FEE DISCLOSURE - HARTLEIGH GROUP]\n` +
+    `• Verified Deal Valuation: $${v.toLocaleString()} USD\n` +
+    `• 1) Mandate / Verification Retainer: $${ret.toLocaleString()} USD\n` +
+    `• 2) Discovery / Solution Reward: $${rew.toLocaleString()} USD\n` +
+    `• 3) Non-Custodial Success Commission (${pct}%): $${comm.toLocaleString()} USD\n` +
+    `• Total Disclosed Fee Potential: $${total.toLocaleString()} USD (Principal settles 100% directly Buyer <-> Seller)\n` +
+    `• Automated Settlement Rail (${c}): ${rail}`;
+}
+calc();
+</script>
+</body>
+</html>

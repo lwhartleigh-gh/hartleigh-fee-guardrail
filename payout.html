@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cross-Border Payout Cost Comparator — Hartleigh Group</title>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background:#fff9fc; color:#0f172a; margin:0; padding:28px; line-height:1.6; }
+  .card { max-width:840px; margin:0 auto; background:#fff; border:1px solid #fbcfe8; border-radius:16px; padding:26px 30px; box-shadow:0 10px 30px rgba(157,23,77,0.08); }
+  h1 { margin:0 0 6px; font-size:22px; color:#9d174d; }
+  .sub { font-size:12.5px; color:#64748b; margin-bottom:6px; }
+  .free-badge { display:inline-block; background:#ecfdf5; color:#047857; font-size:12px; font-weight:700; padding:5px 11px; border-radius:999px; margin-bottom:16px; }
+  label { display:block; font-size:11.5px; font-weight:700; color:#9d174d; margin-bottom:4px; }
+  input { width:100%; padding:8px 10px; border:1px solid #f3d1e0; border-radius:8px; font-size:13px; box-sizing:border-box; }
+  .amtrow { display:grid; grid-template-columns:1.2fr 1fr auto; gap:12px; align-items:end; margin-bottom:12px; }
+  .rails { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin:10px 0 4px; }
+  .rail { border:1px solid #f3d1e0; border-radius:12px; padding:14px; }
+  .rail h3 { font-size:13px; color:#9d174d; margin:0 0 10px; }
+  .rail .f { margin-bottom:8px; }
+  .rail input { font-size:12.5px; padding:7px 9px; }
+  .rail .approx { font-size:10.5px; color:#64748b; margin-top:2px; }
+  button.calc { background:linear-gradient(135deg,#ec4899,#9d174d); color:#fff; border:none; border-radius:10px; padding:10px 16px; font-weight:800; cursor:pointer; font-size:13px; }
+  .rail .net { font-size:20px; font-weight:800; color:#047857; margin:10px 0 2px; }
+  .rail .eff { font-size:11.5px; color:#334155; }
+  .rail.best { border-color:#a7f3d0; background:#ecfdf5; }
+  h2 { font-size:15px; color:#9d174d; margin:22px 0 10px; border-top:1px solid #fbcfe8; padding-top:16px; }
+  .tiers { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+  .tier { border:1px solid #f3d1e0; border-radius:12px; padding:14px; text-align:center; }
+  .tier .price { font-size:20px; font-weight:800; color:#9d174d; }
+  .tier .name { font-size:11.5px; font-weight:700; margin:4px 0 8px; color:#334155; }
+  .tier a { display:inline-block; background:#9d174d; color:#fff; text-decoration:none; padding:8px 12px; border-radius:8px; font-size:12px; font-weight:700; }
+  .disc { background:#fff7ed; border:1px solid #fed7aa; border-radius:12px; padding:12px 14px; font-size:11.5px; color:#7c2d12; margin:16px 0 0; }
+  .note { font-size:11px; color:#64748b; margin-top:18px; border-top:1px solid #f3d1e0; padding-top:14px; }
+  a.navlink { color:#9d174d; font-weight:700; }
+  .alert { font-size:12px; color:#047857; font-weight:700; margin-top:8px; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div><a class="navlink" href="./">← Fee Calculator</a> &nbsp;·&nbsp; <a class="navlink" href="./selector.html">→ Model Selector</a></div>
+  <h1>Cross-Border Payout Cost Comparator</h1>
+  <div class="sub">Compare which rail leaves the MOST in your account for the same cross-border payment. <strong>You set the fee numbers</strong> — this tool never invents a provider's rate.</div>
+  <div class="free-badge">✅ 100% FREE · in-browser · no tracking</div>
+
+  <div class="amtrow">
+    <div><label>Payment amount (USD)</label><input id="amount" type="number" value="1000" /></div>
+    <div><label>In<span>c</span>urrency received in</label>
+      <input id="cur" type="text" value="USD" placeholder="e.g. USD, GBP, EUR, JPY" />
+    </div>
+    <div><button class="calc" onclick="fillDefaults()">Load illustrative defaults</button></div>
+  </div>
+  <div style="font-size:11px;color:#64748b;margin-bottom:8px;">“Load illustrative defaults” fills typical published ranges to get you started — <strong>always verify the current fee schedule on each provider's page before deciding.</strong></div>
+
+  <div class="rails">
+    <div class="rail" id="rail-pp">
+      <h3>PayPal (international)</h3>
+      <div class="f"><label>Fee % of amount</label><input id="pp_pct" type="number" step="0.01" placeholder="e.g. 4.5" /></div><div class="approx"></div>
+      <div class="f"><label>Fixed fee (USD)</label><input id="pp_fixed" type="number" step="0.01" placeholder="e.g. 0.3" /></div><div class="approx"></div>
+      <div class="f"><label>FX margin % (vs mid)</label><input id="pp_fx" type="number" step="0.01" placeholder="e.g. 4.0" /></div><div class="approx"></div>
+      <div class="net" id="pp_net">—</div><div class="eff" id="pp_eff">—</div>
+    </div>
+    <div class="rail" id="rail-wise">
+      <h3>Wise / other EFT</h3>
+      <div class="f"><label>Fee % of amount</label><input id="w_pct" type="number" step="0.01" placeholder="e.g. 0.6" /></div><div class="approx"></div>
+      <div class="f"><label>Fixed fee (USD)</label><input id="w_fixed" type="number" step="0.01" placeholder="e.g. 1.0" /></div><div class="approx"></div>
+      <div class="f"><label>FX margin % (vs mid)</label><input id="w_fx" type="number" step="0.01" placeholder="e.g. 0.5" /></div><div class="approx"></div>
+      <div class="net" id="w_net">—</div><div class="eff" id="w_eff">—</div>
+    </div>
+    <div class="rail" id="rail-esc">
+      <h3>Escrow.com / milestone</h3>
+      <div class="f"><label>Fee % of amount</label><input id="e_pct" type="number" step="0.01" placeholder="e.g. 0.89" /></div><div class="approx"></div>
+      <div class="f"><label>Fixed fee (USD)</label><input id="e_fixed" type="number" step="0.01" placeholder="e.g. 10" /></div><div class="approx"></div>
+      <div class="f"><label>FX margin % (vs mid)</label><input id="e_fx" type="number" step="0.01" placeholder="e.g. 0" /></div><div class="approx"></div>
+      <div class="net" id="e_net">—</div><div class="eff" id="e_eff">—</div>
+    </div>
+  </div>
+  <button class="calc" style="width:100%" onclick="run()">Compare net payout</button>
+  <div class="alert" id="best"></div>
+
+  <h2>Found this useful? You can support it (optional)</h2>
+  <div class="disc">
+    <strong>Before sending anything:</strong> These buttons are <strong>voluntary contributions to keep this tool free</strong>.
+    They do <strong>NOT</strong> purchase any product, service, report, or guarantee — <strong>nothing is owed</strong> and there is nothing to deliver or refund.
+    Numbers shown are from inputs you provide — this tool makes no claims about any provider's actual fees.
+  </div>
+  <div class="tiers">
+    <div class="tier"><div class="price">$49</div><div class="name">Support the free tool</div><a href="https://paypal.me/hartleighpaypal/49" target="_blank" rel="noopener">Support via PayPal</a></div>
+    <div class="tier"><div class="price">$190</div><div class="name">Support the free tool</div><a href="https://paypal.me/hartleighpaypal/190" target="_blank" rel="noopener">Support via PayPal</a></div>
+    <div class="tier"><div class="price">$490</div><div class="name">Support the free tool</div><a href="https://paypal.me/hartleighpaypal/490" target="_blank" rel="noopener">Support via PayPal</a></div>
+  </div>
+
+  <div class="note">
+    <strong>Honesty &amp; limits.</strong> Fee figures are <strong>user-entered</strong>; the built-in "illustrative defaults" are generic published-style ranges for convenience, <strong>not a verified schedule</strong>.
+    Always confirm current fees on the provider's official page. This is a comparison aid, not financial or tax advice. It makes no income claims.
+    Hartleigh Group acts strictly as a non-custodial research, verification and introducer desk and never holds principal funds.
+    <br><br><em>Identity: Hartleigh Group &lt;lwhartleigh@gmail.com&gt; · Support: paypal.me/hartleighpaypal</em>
+  </div>
+</div>
+<script>
+function net(amount, pct, fixed, fx){ return Math.max(0, amount*(1-pct/100)*(1-fx/100) - fixed); }
+function fmt(x, cur){ try{ return new Intl.NumberFormat(undefined,{style:'currency',currency:(cur||'USD')}).format(x);}catch(e){return cur+' '+x.toFixed(2);} }
+function fillDefaults(){
+  document.getElementById('pp_pct').value=4.5; document.getElementById('pp_fixed').value=0.3; document.getElementById('pp_fx').value=4.0;
+  document.getElementById('w_pct').value=0.6; document.getElementById('w_fixed').value=1.0; document.getElementById('w_fx').value=0.5;
+  document.getElementById('e_pct').value=0.89; document.getElementById('e_fixed').value=10; document.getElementById('e_fx').value=0;
+  run();
+}
+function run(){
+  const amt = Math.max(0, Number(document.getElementById('amount').value||0));
+  const cur = (document.getElementById('cur').value||'USD').toUpperCase().trim()||'USD';
+  const rails=[
+    {id:'pp', name:'PayPal (international)', pct:+document.getElementById('pp_pct').value||0, fixed:+document.getElementById('pp_fixed').value||0, fx:+document.getElementById('pp_fx').value||0},
+    {id:'w',  name:'Wise / other EFT', pct:+document.getElementById('w_pct').value||0, fixed:+document.getElementById('w_fixed').value||0, fx:+document.getElementById('w_fx').value||0},
+    {id:'e',  name:'Escrow.com / milestone', pct:+document.getElementById('e_pct').value||0, fixed:+document.getElementById('e_fixed').value||0, fx:+document.getElementById('e_fx').value||0}
+  ];
+  rails.forEach(r=>{ r.net = net(amt,r.pct,r.fixed,r.fx);
+    document.getElementById(r.id+'_net').textContent = fmt(r.net,cur);
+    document.getElementById(r.id+'_eff').textContent = amt>0 ? ('effective '+(r.net/amt*100).toFixed(2)+'% of '+fmt(amt,cur)) : '—';
+    document.getElementById('rail-'+r.id).classList.remove('best');
+  });
+  if (amt>0){ const best = rails.reduce((a,b)=> b.net>a.net?b:a);
+    document.getElementById('rail-'+best.id).classList.add('best');
+    document.getElementById('best').textContent = '🏆 Best net: '+best.name+' — leaves '+fmt(best.net,cur)+' (your chosen numbers).';
+  } else document.getElementById('best').textContent='';
+}
+run();
+</script>
+</body>
+</html>
